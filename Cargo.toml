@@ -303,3 +303,6 @@ path = "src/uutils/uutils.rs"
 
 [[test]]
 name = "tests"
+
+[patch.crates-io]
+uucore   = { git = "https://github.com/rivy/rust.uucore", branch = "fix" }
