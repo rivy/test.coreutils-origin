@@ -85,7 +85,9 @@ install:
   # force branch checkout (if knowable), then reset to the specific commit ## (can be needed for accurate code coverage info)
   # * this allows later apps to see the branch name using standard `git branch` operations, yet always builds the correct specific commit
   # * ref: <https://github.com/appveyor/ci/issues/1606>[`@`](https://archive.is/RVpnF)
-  - if DEFINED APPVEYOR_REPO_BRANCH if /I "%APPVEYOR_REPO_SCM%"=="git" ( git checkout "%APPVEYOR_REPO_BRANCH%" 2>NUL & git reset --hard "%APPVEYOR_REPO_COMMIT%" )
+  - echo APPVEYOR_REPO_COMMIT="%APPVEYOR_REPO_COMMIT%"
+  - echo APPVEYOR_PULL_REQUEST_HEAD_COMMIT="%APPVEYOR_PULL_REQUEST_HEAD_COMMIT%"
+  - if DEFINED APPVEYOR_REPO_BRANCH if /I "%APPVEYOR_REPO_SCM%"=="git" ( git checkout "%APPVEYOR_REPO_BRANCH%" 2>NUL & if DEFINED APPVEYOR_PULL_REQUEST_HEAD_COMMIT ( git reset --hard "%APPVEYOR_PULL_REQUEST_HEAD_COMMIT%" ) else ( git reset --hard "%APPVEYOR_REPO_COMMIT%" ) )
   # ensure CWD is project main directory
   - cd "%APPVEYOR_BUILD_FOLDER%"
   # create a working area
